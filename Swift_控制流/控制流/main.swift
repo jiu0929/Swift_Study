@@ -1,0 +1,378 @@
+//
+//main.swift
+//控制流
+//
+//Created by caoxu on 2017/3/1.
+//Copyright © 2017年 BJWenTianXia. All rights reserved.
+//
+
+import Foundation
+
+//for-in 循环
+fileprivate func testForIn() {
+    //直接循环提取内部数据
+    //[1,5]
+    for index in 1...5 {
+        print("\(index) times 5 is \(index * 5)")
+    }
+    
+    //不需要提取数据 只需要循环次数
+    let base = 2
+    let power = 3
+    var answer = 1
+    for _ in 1...power {
+        answer *= base
+    }
+    print("\(base) to the power of \(power) is \(answer)")
+    
+    //array遍历
+    let array = ["XuBaoAiChiYu", "1045214799"]
+    for item in array {
+        print("array:\(item)!")
+    }
+    
+    //Dictionary遍历
+    let dict = ["name":"XuBaoAiChiYu", "QQ":"1045214799"]
+    for (key, value) in dict {
+        print("key:\(key);value:\(value)")
+    }
+    
+    /*  print
+     
+     1 times 5 is 5
+     2 times 5 is 10
+     3 times 5 is 15
+     4 times 5 is 20
+     5 times 5 is 25
+     2 to the power of 3 is 8
+     array:XuBaoAiChiYu!
+     array:1045214799!
+     key:name;value:XuBaoAiChiYu
+     key:QQ;value:1045214799
+     
+     */
+}
+
+//while循环
+fileprivate func testWhile() {
+    //先执行while条件判断 后执行内部代码
+    let count = 4
+    var index = 0
+    while index < count {
+        index += 1
+        print("while:\(index)")
+    }
+    
+    /*  print
+     
+     while:1
+     while:2
+     while:3
+     while:4
+     
+     */
+}
+
+//repeat-while循环
+fileprivate func testRepeatWhile() {
+    //执行内部代码后判断条件
+    let count = 4
+    var index = 0
+    repeat {
+        index += 1
+        print("RepeatWhile:\(index)")
+    } while index < count
+    
+    /*  print
+     
+     RepeatWhile:1
+     RepeatWhile:2
+     RepeatWhile:3
+     RepeatWhile:4
+     
+     */
+}
+
+//if 判断
+fileprivate func testIf() {
+    //一个条件一个条件的判断 当条件为真时 执行内部程序
+    let temp = 90
+    if temp <= 32 {
+        //不执行
+    } else if temp >= 86 {
+        print("执行")
+    } else {
+        //不执行
+    }
+    
+    /*  print
+     
+     执行
+     
+     */
+}
+
+//swich判断
+fileprivate func testSwitch() {
+    //基本switch (case不会穿透)
+    
+    let someCharacter: Character = "a"
+    switch someCharacter {
+    case "a":
+        print("1")
+    case "a", "b", "c":
+        print("2") //这里不会输出 case找到后 执行完毕就返回(如果需要穿透 加 fallthrough)
+    default:
+        print("未找到")
+    }
+    
+    /*  print
+     
+     1
+     
+     */
+}
+
+//switch范围选择
+fileprivate func testSwitchIntervalMatching() {
+    //范围选择
+    let approximateCount = 2
+    switch approximateCount {
+    case 1..<5:
+        print("[1, 5)")
+    case 5..<10:
+        print("[5, 10)")
+    default:
+        print("未找到")
+    }
+    
+    /*  print
+     
+     [1, 5)
+     
+     */
+}
+
+//switch元组选择
+fileprivate func testSwitchTuples() {
+    //元组选择 坐标轴测试
+    let random = arc4random()//随机数
+    let somePoint = (Int(random%3), Int(random%3))//随机数获取点
+    switch somePoint {
+    case (0, 0):
+        print("(0, 0) is at the origin")
+    case (_, 0):
+        print("(\(somePoint.0), 0) is on the x-axis")
+    case (0, _):
+        print("(0, \(somePoint.1)) is on the y-axis")
+    case (-2...2, -2...2):
+        print("(\(somePoint.0), \(somePoint.1)) is inside the box")
+    default:
+        print("(\(somePoint.0), \(somePoint.1)) is outside of the box")
+    }
+    
+    /*  print
+     
+     (2, 2) is inside the box
+     
+     */
+}
+
+//switch值选择
+fileprivate func testSwitchValueBindings() {
+    let random = arc4random()//随机数
+    //值绑定 如果设置未知数 当匹配成功时 执行此代码
+    let anotherPoint = (Int(random%3), Int(random%1))
+    switch anotherPoint {
+    case (let x, 0):
+        print("\(x)，x匹配")
+    case (0, let y):
+        print("\(y)，y匹配")
+    case let (x, y):
+        print("(\(x), \(y))，其他")
+    }
+    
+    /*  print
+     
+     1，x匹配
+     
+     */
+}
+
+//switch值绑定和where
+fileprivate func testSwitchValueBindingsWhere() {
+    //使用where条件二次判断
+    let random = arc4random()//随机数
+    let yetAnotherPoint = (Int(random%3), Int(random%3))
+    switch yetAnotherPoint {
+    case let (x, y) where x < y:
+        print("\(x) < \(y)")
+    case let (x, y) where x > y:
+        print("\(x) > \(y)")
+    case let (x, y):
+        print("\(x) = \(y)")
+    }
+    
+    /*  print
+     
+     1 = 1
+     
+     */
+}
+
+//continue
+fileprivate func testContinue() {
+    //跳过本次循环 继续执行下次循环
+    for index in 1...5 {
+        if index == 2 {
+            continue
+        }
+        print("continue:\(index)")
+    }
+    
+    /*  print
+     
+     continue:1
+     continue:3
+     continue:4
+     continue:5
+     
+     */
+}
+
+//break
+fileprivate func testBreak() {
+    
+    // 跳过当前for或者switch 继续执行
+    for x in 1...5 {
+        if x == 2 {
+            break
+        }
+        print("break-x:\(x)")
+    }
+    print("break-for")
+    
+    let z = 0
+    switch z {
+    case 0:
+        break;
+    default:
+        break;
+    }
+    print("break-switch")
+    
+    /*  print
+     
+     break-x:1
+     break-for
+     break-switch
+     
+     */
+}
+
+//fallthrough
+fileprivate func testFallthrough() {
+    //击穿：执行当前case内的代码 并执行下一个case内的代码
+    let x = Int(arc4random()%1)//0
+    switch x {
+    case 0:
+        print("0")
+        fallthrough
+    case  1:
+        print("1")
+        fallthrough
+    default:
+        break;
+    }
+    
+    /*  print
+     
+     0
+     1
+     
+     */
+}
+
+//标签
+fileprivate func testLabeledStatements() {
+    //标签语句 可以直接跳到写标签行的代码
+    var b = false
+    go : while true {
+        print("go")
+        switch b {
+        case true:
+            print("true")
+            break go //跳过go标签的代码
+        case false:
+            print("false")
+            b = true
+            continue go //继续执行go标签的代码
+        }
+    }
+    
+    /*  print
+     
+     go
+     false
+     go
+     true
+     
+     */
+}
+
+//提前退出
+fileprivate func testEarlyExit() {
+    //guard和if很像 当条件判断为假时 才执行else中的代码
+    func greet(_ person: [String: String]) {
+        guard let name = person["name"] else {
+            print("no name")
+            return
+        }
+        print("name: \(name)!")
+    }
+    
+    greet([:])
+    greet(["name": "XU"])
+    
+    /*  print
+     
+     no name
+     name: XU!
+     
+     */
+}
+
+//检查API可用性
+fileprivate func testCheckingAPIAvailability() {
+    if #available(iOS 9.1, OSX 10.10, *) {
+        print("iOS 9.1, OSX 10.10, *")
+    } else {
+        print("低版本")
+    }
+    
+    /*  print
+     
+     iOS 9.1, OSX 10.10, *
+     
+     */
+}
+
+fileprivate func test() {
+    //    testForIn() //for-in 循环
+    //    testWhile() //while循环
+    //    testRepeatWhile() //repeat-while循环
+    //    testIf() //if 判断
+    //    testSwitch() //swich判断
+    //    testSwitchIntervalMatching() //switch范围选择
+    //    testSwitchTuples() //switch元组选择
+    //    testSwitchValueBindings() //switch值选择
+    //    testSwitchValueBindingsWhere() //switch值绑定和where
+    //    testContinue() //continue
+    //    testBreak() //break
+    //    testFallthrough() //fallthrough
+    //    testLabeledStatements() //标签
+    //    testEarlyExit() //提前退出
+    //    testCheckingAPIAvailability() //检查API可用性
+}
+
+test()
